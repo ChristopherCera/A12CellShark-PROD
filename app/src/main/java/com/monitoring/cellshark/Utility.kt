@@ -1,4 +1,7 @@
 package com.monitoring.cellshark
 
-class Utility {
+object Utility {
+
+
+
 }

@@ -1,6 +1,450 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        tools:context=".MainActivity"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/start_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.05" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/end_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.95" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/Top_Guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.050615594" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/bot_Guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.95" />
+
+        <TextView
+            android:id="@+id/appTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text=""
+            android:textColor="@color/material_on_surface_disabled"
+            android:textSize="10sp"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintEnd_toEndOf="@+id/end_guideline"
+            app:layout_constraintTop_toTopOf="@id/Top_Guideline"
+            />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/serialContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="34sp"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@+id/Top_Guideline"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline">
+
+            <TextView
+                android:id="@+id/serialTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Device Serial Number"
+                android:fontFamily="sans-serif"
+                android:textStyle="bold"
+                android:textSize="26sp"
+                android:textColor="?colorPrimary"
+                app:layout_constraintStart_toStartOf="@id/serialContainer"
+                app:layout_constraintTop_toTopOf="@id/serialContainer"/>
+
+            <TextView
+                android:id="@+id/device_sn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-light"
+                android:hint="Unknown"
+                android:textSize="24sp"
+                app:layout_constraintTop_toBottomOf="@id/serialTV"
+                app:layout_constraintStart_toStartOf="@id/serialContainer"
+                tools:ignore="HardcodedText" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/CellMetricsContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintEnd_toEndOf="@+id/end_guideline"
+            app:layout_constraintTop_toBottomOf="@id/serialContainer">
+
+            <TextView
+                android:id="@+id/cellMetricsTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="26sp"
+                android:fontFamily="sans-serif"
+                android:textStyle="bold"
+                android:textColor="?colorPrimary"
+                app:layout_constraintStart_toStartOf="@+id/CellMetricsContainer"
+                app:layout_constraintTop_toTopOf="@+id/CellMetricsContainer"
+                android:text="Cell Metrics" />
+
+            <TextView
+                android:id="@+id/lteStateTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:fontFamily="sans-serif"
+                app:layout_constraintTop_toBottomOf="@id/cellMetricsTV"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="LTE Data State - "/>
+
+            <TextView
+                android:id="@+id/lteStateLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="@id/lteStateTV"
+                app:layout_constraintStart_toEndOf="@id/lteStateTV"
+                android:text="Not Available"/>
+
+            <TextView
+                android:id="@+id/simStateTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                app:layout_constraintTop_toBottomOf="@+id/lteStateTV"
+                app:layout_constraintStart_toStartOf="parent"
+                android:text="SIM State - "/>
+
+            <TextView
+                android:id="@+id/simStateLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@+id/simStateTV"
+                app:layout_constraintTop_toTopOf="@+id/simStateTV"
+                android:text="N/A"/>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal"
+                android:id="@+id/cellDetailsContainer"
+                app:layout_constraintTop_toBottomOf="@id/simStateTV">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:text="RSRP"
+                        android:textColor="?colorSecondaryVariant"
+                        android:textAlignment="center"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/cellRsrpLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textSize="16sp"
+                        android:textAlignment="center" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:text="RSRQ"
+                        android:textAlignment="center"
+                        android:textColor="?colorSecondaryVariant"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/cellRsrqLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:text="0"
+                        android:textAlignment="center" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:text="Band"
+                        android:textSize="16sp"
+                        android:textColor="?colorSecondaryVariant"
+                        android:textAlignment="center"/>
+
+                    <TextView
+                        android:id="@+id/cellBandLabel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:text="0"
+                        android:textAlignment="center" />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <TextView
+            android:id="@+id/LiveWiFiMetrics_TV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="WiFi Metrics"
+            android:textSize="26sp"
+            android:layout_marginTop="32dp"
+            android:fontFamily="sans-serif"
+            android:textStyle="bold"
+            android:textColor="?colorPrimary"
+            app:layout_constraintTop_toBottomOf="@id/CellMetricsContainer"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"/>
+
+        <LinearLayout
+            android:id="@+id/connectedSSID_Layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/LiveWiFiMetrics_TV"
+            app:layout_constraintStart_toStartOf="@id/start_guideline">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="Connected SSID - "/>
+
+            <TextView
+                android:id="@+id/connectedSSID_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No SSID Connected"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/connectedBSSID_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/connectedSSID_Layout"
+            app:layout_constraintStart_toStartOf="@id/start_guideline">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="Connected BSSID - "/>
+
+            <TextView
+                android:id="@+id/connectedBSSID_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No BSSID Available"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/wifiTechTV"
+            android:layout_width="100dp"
+            android:layout_height="19dp"
+            android:fontFamily="sans-serif"
+            android:text="WiFi Capability - "
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/connectedBSSID_layout"/>
+
+        <TextView
+            android:id="@+id/wifiTechLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/wifiTechTV"
+            app:layout_constraintTop_toTopOf="@+id/wifiTechTV"
+            android:text="Not Available"/>
+
+        <LinearLayout
+            android:id="@+id/ipAddress_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/wifiTechTV"
+            app:layout_constraintStart_toStartOf="@id/start_guideline">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="Device IP - "/>
+
+            <TextView
+                android:id="@+id/deviceIP_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="N/A"/>
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            android:id="@+id/WiFiMetrics_LinearLayout"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintTop_toBottomOf="@id/ipAddress_layout">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:text="RSSI"
+                    android:textColor="?colorSecondaryVariant"
+                    android:textAlignment="center"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/rssiLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="N/A"
+                    android:textAlignment="center"
+                    android:textSize="16sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:text="Link Rate"
+                    android:textColor="?colorSecondaryVariant"
+                    android:textAlignment="center"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/linkRateLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="N/A"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:text="Band"
+                    android:textColor="?colorSecondaryVariant"
+                    android:textAlignment="center"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/wifiBandLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="N/A"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:text="Channel"
+                    android:textColor="?colorSecondaryVariant"
+                    android:textAlignment="center"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/wifiChannelLabel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="N/A"
+                    android:textAlignment="center" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

@@ -36,6 +36,30 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.90" />
 
+<!--    <androidx.fragment.app.FragmentContainerView-->
+<!--        android:id="@+id/nav_graph_fragment"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:name="com.monitoring.cellshark.fragments.MetricsFragment"-->
+<!--        app:defaultNavHost="true"-->
+<!--        app:layout_constraintTop_toTopOf="@id/Top_Guideline"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:navGraph="@navigation/nav_graph"-->
+<!--        tools:layout="@layout/metrics_fragment" />-->
+
+<!--    <androidx.fragment.app.FragmentContainerView-->
+<!--        android:id="@+id/nav_graph_fragment"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:name="com.monitoring.cellshark.fragments.MetricsFragment"-->
+<!--        app:defaultNavHost="true"-->
+<!--        app:layout_constraintTop_toTopOf="@id/Top_Guideline"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:navGraph="@navigation/nav_graph"-->
+<!--        tools:layout="@layout/metrics_fragment" />-->
+
+    <include layout="@layout/content_main" />
+
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -60,33 +84,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5sp"
-                android:text="Start Service"/>
+                android:text="@string/start_service"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/service_fab"
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:clickable="true"
-                app:borderWidth="0dp"
-                android:contentDescription="fab"
+                android:contentDescription="@string/fab"
                 android:theme="@style/Theme.CellShark.NoActionBar"
+                app:borderWidth="0dp"
                 app:layout_constraintBottom_toBottomOf="@id/bot_Guideline"
                 app:layout_constraintEnd_toEndOf="@id/end_guideline"
-                app:srcCompat="@drawable/ic_baseline_play_arrow_24" />
+                app:srcCompat="@drawable/ic_baseline_play_arrow_24"
+                tools:ignore="DuplicateSpeakableTextCheck" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="10dp"
+            android:layout_marginTop="20dp"
             android:gravity="center">
 
             <TextView
                 android:id="@+id/port_checker_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Run Port Checker"
+                android:text="@string/run_port_checker"
                 android:layout_marginEnd="5sp"
                 android:textAlignment="center"/>
 
@@ -96,7 +121,7 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 app:borderWidth="0dp"
-                android:contentDescription="fab"
+                android:contentDescription="@string/fab"
                 android:theme="@style/Theme.CellShark.NoActionBar"
                 app:layout_constraintBottom_toBottomOf="@id/bot_Guideline"
                 app:layout_constraintEnd_toEndOf="@id/end_guideline"
@@ -107,6 +132,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:textAlignment="center"
             android:gravity="center|end">
 
@@ -114,7 +140,7 @@
                 android:id="@+id/menu_expand_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Open Menu"
+                android:text="@string/open_menu"
                 android:textAlignment="center"
                 android:layout_marginEnd="5sp"/>
 
@@ -122,7 +148,7 @@
                 android:id="@+id/home_fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="fab"
+                android:contentDescription="@string/fab"
                 android:clickable="true"
                 app:borderWidth="0dp"
                 android:theme="@style/Theme.CellShark.NoActionBar"
@@ -133,6 +159,7 @@
         </LinearLayout>
 
     </LinearLayout>
+
 
 
 
