@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--    Midnight Blue-->
+    <color name="extra_dark_midnight_blue">#002865</color>
+    <color name="dark_midnight_blue">#175697</color>
+    <color name="midnight_blue">#3173B1</color>
+    <color name="light_midnight_blue">#A7BBD8</color>
+    <color name="extra_light_midnight_blue">#D3DDEC</color>
+
+    <!--    Morning Blue-->
+    <color name="morning_blue">#6DD5EC</color>
+    <color name="light_morning_blue">#BFE9F2</color>
+
+    <!--    Green-->
+    <color name="green">#00C593</color>
+    <color name="light_green">#00E4AA</color>
+    <color name="extra_light_green">#E4F9F0</color>
+
+    <!--    Neutral Colors-->
+    <color name="gray">#565656</color>
+    <color name="light_gray">#BDBDBD</color>
+    <color name="extra_light_gray">#F2F2F2</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>
