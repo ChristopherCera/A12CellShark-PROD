@@ -2,6 +2,7 @@ package com.monitoring.cellshark.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.BoringLayout.Metrics
 import android.text.format.Formatter
 import android.util.Log
 import android.view.LayoutInflater
@@ -39,9 +40,14 @@ class MetricsFragment: Fragment(R.layout.metrics_fragment) {
         Log.d("TAG", "Metrics Fragment")
         binding.serialContainer.setOnLongClickListener {
             Log.d("TAG", "TEST")
+            binding.deviceSn.text = "Unable to Retrieve Device Serial"
             true
         }
 
+        val data = EventBus.getDefault().getStickyEvent(MetricsEvent::class.java)
+        if (data == null) {
+            Log.d("Event_State", "Event is Null")
+        } else onMetricsUpdate(data)
 
         super.onViewCreated(view, savedInstanceState)
     }
@@ -59,6 +65,7 @@ class MetricsFragment: Fragment(R.layout.metrics_fragment) {
         binding.wifiBandLabel.text = Utility.getBand(event.wm.frequency)
         binding.wifiChannelLabel.text = Utility.getChannel(event.wm.frequency).toString()
         binding.wifiTechLabel.text = event.wifiCapability
+        binding.simStateLabel.text = event.lteSimState
 
         //LTE UPDATE
         binding.cellRsrpLabel.text = event.lteRSRP

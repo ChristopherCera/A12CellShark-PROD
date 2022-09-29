@@ -14,6 +14,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import com.monitoring.cellshark.databinding.ActivityMainBinding
 import com.monitoring.cellshark.fragments.MetricsFragment
 
@@ -34,12 +35,8 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
-//        val navController = navHostFragment.navController
         window.attributes.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
         val navController = findNavController(R.id.nav_host_fragment_content_main)
-
-
 
         val cellSharkService = Intent(this, MetricsService::class.java)
 
@@ -51,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         homeTV = findViewById(R.id.menu_expand_tv)
 
         initFABMenu()
-
+        SmartFileWriter().writeDirectories()
 
         homeFAB.setOnClickListener {
             if (!isFABOpen) {
@@ -66,6 +63,7 @@ class MainActivity : AppCompatActivity() {
             //DO SOMETHING
             if (!SERVICE_RUNNING) {
                 SERVICE_RUNNING = true
+                Snackbar.make(it, "Augmedix Service Started", Snackbar.LENGTH_SHORT).setAction("Action", null).show()
                 startForegroundService(cellSharkService)
                 serviceFAB.animate().setInterpolator(interpolator).rotation(180f).setDuration(300).start()
                 serviceTV.text = "Stop Service"

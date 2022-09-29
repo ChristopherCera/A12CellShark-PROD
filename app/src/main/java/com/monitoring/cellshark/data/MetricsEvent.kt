@@ -14,12 +14,14 @@ class MetricsEvent {
     lateinit var lteRSRP: String
     lateinit var lteRSRQ: String
     lateinit var lteBand: String
-    lateinit var wifiCapability: String
+    var lteSimState: String
+    var wifiCapability: String
     var dataState: String
 
     @SuppressLint("MissingPermission")
     constructor(tm: TelephonyManager, wm: WifiManager) {
         dataState = getDataState(tm.dataState)
+        lteSimState = getSimState(tm.simState)
         wifiCapability = getWiFiStandard(wm)
         this.wm = wm.connectionInfo
         tm.allCellInfo.forEach { event ->
@@ -81,6 +83,45 @@ class MetricsEvent {
             ScanResult.WIFI_STANDARD_UNKNOWN -> { "UNKNOWN" }
             else -> { "N/A" }
 
+        }
+    }
+
+    private fun getSimState(value: Int): String {
+        return when(value) {
+
+            TelephonyManager.SIM_STATE_ABSENT ->            {
+                "Absent"
+            }
+            TelephonyManager.SIM_STATE_CARD_IO_ERROR ->     {
+                "IO Error"
+            }
+            TelephonyManager.SIM_STATE_CARD_RESTRICTED ->   {
+                "Restricted"
+            }
+            TelephonyManager.SIM_STATE_NETWORK_LOCKED ->    {
+                "Network Locked"
+            }
+            TelephonyManager.SIM_STATE_NOT_READY ->         {
+                "Not Ready"
+            }
+            TelephonyManager.SIM_STATE_PERM_DISABLED ->     {
+                "Permanently Disabled"
+            }
+            TelephonyManager.SIM_STATE_PIN_REQUIRED ->      {
+                "PIN Required"
+            }
+            TelephonyManager.SIM_STATE_PUK_REQUIRED ->      {
+                "PUK Required"
+            }
+            TelephonyManager.SIM_STATE_READY ->             {
+                "Ready"
+            }
+            TelephonyManager.SIM_STATE_UNKNOWN ->           {
+                "Unknown"
+            }
+            else -> {
+                "N/A"
+            }
         }
     }
 

@@ -11,6 +11,7 @@ import android.os.PowerManager
 import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
 import android.widget.Toast
+import com.google.android.material.snackbar.Snackbar
 import com.monitoring.cellshark.data.MetricsEvent
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -70,7 +71,8 @@ class MetricsService: Service() {
 
     @Subscribe
     fun addToEventBus(tm: TelephonyManager, wm: WifiManager) {
-        EventBus.getDefault().post(MetricsEvent(tm, wm))
+//        EventBus.getDefault().post(MetricsEvent(tm, wm))
+        EventBus.getDefault().postSticky(MetricsEvent(tm, wm))
     }
 
     override fun onBind(intent: Intent?): IBinder? {
@@ -91,7 +93,7 @@ class MetricsService: Service() {
             .setContentIntent(pendingIntent)
             .setContentText("Augmedix Service Running").build()
         startForeground(REQUEST_CODE, notification)
-        Toast.makeText(this, "Augmedix Service Running", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, "Augmedix Service Running", Toast.LENGTH_SHORT).show()
     }
 }
 

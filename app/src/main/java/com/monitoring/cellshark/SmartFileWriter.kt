@@ -9,9 +9,12 @@ import java.io.IOException
 
 class SmartFileWriter {
 
-    fun writeDirectories(): Boolean {
-
-        return true
+    fun writeDirectories() {
+        val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+        val metricsDir = File("$path/Smart/Metrics_Data/")
+        val serialDir = File("$path/Smart/Serial_Data/")
+        if (!metricsDir.exists()) metricsDir.mkdirs()
+        if (!serialDir.exists()) serialDir.mkdirs()
     }
 
     fun writeToFile(fileName: String, content: String) {
