@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
 
             else {
                 navController.navigate(R.id.action_portCheckerFragment_to_metricsFragment)
-                portCheckerTV.text = "Run Port Checker"
+                portCheckerTV.text = "Open Port Checker"
             }
 
         }

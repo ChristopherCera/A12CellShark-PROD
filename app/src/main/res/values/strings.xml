@@ -4,5 +4,5 @@
     <string name="fab">fab</string>
     <string name="open_menu">Open Menu</string>
     <string name="start_service">Start Service</string>
-    <string name="run_port_checker">Run Port Checker</string>
+    <string name="run_port_checker">Open Port Checker</string>
 </resources>
