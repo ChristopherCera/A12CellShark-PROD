@@ -3,16 +3,13 @@ package com.monitoring.cellshark
 import android.app.*
 import android.content.Context
 import android.content.Intent
-import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
 import android.os.Handler
 import android.os.IBinder
 import android.os.PowerManager
 import android.telephony.PhoneStateListener
 import android.telephony.TelephonyManager
-import android.widget.Toast
-import com.google.android.material.snackbar.Snackbar
-import com.monitoring.cellshark.data.MetricsEvent
+import com.monitoring.cellshark.data.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 

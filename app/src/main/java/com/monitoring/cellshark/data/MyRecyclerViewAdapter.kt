@@ -16,6 +16,7 @@ internal class MyRecyclerViewAdapter(private var itemsList: List<String>): Recyc
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
+
             val itemView = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item, parent, false)
             return MyViewHolder(itemView)

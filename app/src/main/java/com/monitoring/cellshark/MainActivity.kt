@@ -3,20 +3,16 @@ package com.monitoring.cellshark
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.OvershootInterpolator
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.fragment.app.Fragment
-import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.monitoring.cellshark.data.SERVICE_RUNNING
 import com.monitoring.cellshark.databinding.ActivityMainBinding
-import com.monitoring.cellshark.fragments.MetricsFragment
 
 class MainActivity : AppCompatActivity() {
 

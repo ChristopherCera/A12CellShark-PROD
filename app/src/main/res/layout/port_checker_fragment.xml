@@ -97,6 +97,7 @@
 
 
     <Button
+        android:id="@+id/runCheckerButton"
         android:layout_width="120sp"
         android:layout_height="60sp"
         android:text="Run Port Checker"

@@ -9,6 +9,7 @@ import java.io.IOException
 
 class SmartFileWriter {
 
+
     fun writeDirectories() {
         val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
         val metricsDir = File("$path/Smart/Metrics_Data/")
