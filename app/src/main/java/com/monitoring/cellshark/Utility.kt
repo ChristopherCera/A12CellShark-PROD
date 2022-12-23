@@ -1,7 +1,29 @@
 package com.monitoring.cellshark
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import com.monitoring.cellshark.data.ConnectionInterface
+
 object Utility {
 
+    @SuppressLint("MissingPermission")
+    fun getActiveConnectionInterface(context: Context?): ConnectionInterface {
+
+        if (context == null) return ConnectionInterface.OFFLINE
+
+        val cm: ConnectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = cm.activeNetwork ?: return ConnectionInterface.OFFLINE
+        val activeNetwork = cm.getNetworkCapabilities(network) ?: return ConnectionInterface.OFFLINE
+        return when {
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> ConnectionInterface.WIFI
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> ConnectionInterface.CELLULAR
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> ConnectionInterface.ETHERNET
+            else -> ConnectionInterface.OFFLINE
+        }
+    }
     fun getBand(x: Int): String {
         return when {
             x == 0 -> "N/A"

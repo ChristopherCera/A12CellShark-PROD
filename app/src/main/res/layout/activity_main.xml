@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5sp"
-                android:text="@string/start_service"/>
+                android:text="@string/metrics_page"/>
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/service_fab"
@@ -46,7 +46,7 @@
                 app:borderWidth="0dp"
                 app:layout_constraintBottom_toBottomOf="@id/bot_Guideline"
                 app:layout_constraintEnd_toEndOf="@id/end_guideline"
-                app:srcCompat="@drawable/ic_baseline_play_arrow_24"
+                app:srcCompat="@drawable/ic_baseline_cell_wifi_24"
                 tools:ignore="DuplicateSpeakableTextCheck" />
 
         </LinearLayout>

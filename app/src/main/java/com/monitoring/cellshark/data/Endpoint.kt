@@ -1,14 +1,15 @@
 package com.monitoring.cellshark.data
 
-import kotlin.properties.Delegates
-
-class Endpoint(addresses: Array<String>, name: String, type: EndpointType, description: String) {
+class Endpoint(addresses: Array<String>, name: String, type: EndpointType, description: String = "N/A") {
 
     var endpointName: String = name
+    var type: Int = Constants.PARENT
     var endpoints: Array<String> = addresses
-    var type: EndpointType = type
+    var epType: EndpointType = type
     var description: String = description
-    private var result: MutableList<EndpointResult> = mutableListOf()
+    var isExpanded: Boolean = false
+    var result: MutableList<EndpointResult> = mutableListOf()
+    var parentResult: Boolean? = null
 
     fun addResult(r: EndpointResult) {
         result.add(r)
@@ -16,6 +17,15 @@ class Endpoint(addresses: Array<String>, name: String, type: EndpointType, descr
 
     fun getPair(): MutableList<EndpointResult> {
         return result
+    }
+
+    fun updateParentResult(result: Boolean) {
+        parentResult = result
+    }
+
+    constructor(addresses: Array<String>, name: String, type: EndpointType, description: String, list: MutableList<EndpointResult>) :
+            this(addresses, name, type, description) {
+        result = list
     }
 
 }

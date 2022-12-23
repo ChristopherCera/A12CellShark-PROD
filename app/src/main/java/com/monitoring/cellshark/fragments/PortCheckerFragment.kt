@@ -2,13 +2,13 @@ package com.monitoring.cellshark.fragments
 
 import android.animation.AnimatorSet
 import android.animation.ValueAnimator
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.animation.OvershootInterpolator
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.kittinunf.fuel.core.isSuccessful
@@ -29,7 +29,7 @@ class PortCheckerFragment: Fragment(R.layout.port_checker_fragment) {
     private var _binding: PortCheckerFragmentBinding? = null
     private val binding get() = _binding!!
     private var mobileList = ArrayList<String>()
-    private lateinit var endpointList: MutableList<Endpoint>
+    private var endpointResultList: MutableList<Endpoint> = mutableListOf()
     private val startHeight = 150
     private val endHeight = 900
     private var isExpanded = false
@@ -40,60 +40,68 @@ class PortCheckerFragment: Fragment(R.layout.port_checker_fragment) {
         return binding.root
     }
 
+    override fun onPause() {
+        super.onPause()
+        global_list_temp = endpointResultList
+    }
+
     @OptIn(DelicateCoroutinesApi::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-
-
         val recyclerView = binding.recyclerViewItems
-        binding.expandListButton.setOnClickListener {
-            if (!isExpanded) {
-                slideView(recyclerView, startHeight, endHeight)
-                binding.listExpandTv.text = "Click to minimize list"
-                isExpanded = true
-            } else {
-                slideView(recyclerView, endHeight, startHeight)
-                binding.listExpandTv.text = "Click to expand endpoint list"
-                isExpanded = false
-            }
-        }
 
         binding.runCheckerButton.setOnClickListener {
 
-            GlobalScope.launch(Dispatchers.IO) {
-//                checkEndpointConnectivity( "www.google.com")
-                endpoints.forEach {
-                    checkEndpointConnectivity(it)
+            binding.runCheckerButton.text = "Running Port Checker..."
+            binding.runCheckerButton.isClickable = false
+            binding.runCheckerButton.setBackgroundColor(Color.GRAY)
+
+            GlobalScope.launch(IO) {
+                if (CHECKER_FINISHED) {
+                    endpointResultList.clear()
                 }
+                runEndpointChecker()
+//                endpointResultList.forEach {
+//                    Log.d("endpoint", "AFTER -- Address: ${it.endpointName}\tSize: ${it.result.size}")
+//                }
 
+                withContext(Dispatchers.Main) {
+                    val customAdapter = MyRecyclerViewAdapter(endpointResultList)
+                    val layoutManager = LinearLayoutManager(context)
+                    recyclerView.layoutManager = layoutManager
+                    recyclerView.adapter = customAdapter
+                    binding.runCheckerButton.text = "Port Checker Done"
+                    CHECKER_FINISHED = true
+                }
             }
-
-
         }
 
-        getEndpoints(mobileList)
-        val customAdapter = MyRecyclerViewAdapter(mobileList)
+
+
+        if (CHECKER_FINISHED) {
+            binding.runCheckerButton.text = "Re-run Endpoint Checker"
+            endpointResultList = global_list_temp
+            Log.d("onViewCreated", "onViewCreated(), temp size: ${global_list_temp.size}")
+        }
+
+        Log.d("onViewCreated", "onViewCreated(), epr size: ${endpointResultList.size}")
+
+        val customAdapter = MyRecyclerViewAdapter(endpointResultList)
         val layoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = customAdapter
         super.onViewCreated(view, savedInstanceState)
     }
 
-    private fun getEndpoints(list: ArrayList<String>) {
-        endpoints.forEach {
-//            list.add(it)
-        }
-    }
-
     private suspend fun runEndpointChecker(): MutableList<Endpoint>? = withContext(IO) {
 
-//        endpointHTTPGet.forEach {
-//            endpointList.add(Endpoint(it, EndpointType.GET))
-//        }
+        endpoints.forEach { ep ->
 
-
-
-
+            if (ep.epType == EndpointType.GET) checkEPGet(ep)
+            else {
+                checkEPPing(ep)
+             }
+        }
         return@withContext null
     }
 
@@ -110,23 +118,86 @@ class PortCheckerFragment: Fragment(R.layout.port_checker_fragment) {
         animationSet.start()
     }
 
-    private fun checkEndpointConnectivity(ep: Endpoint) {
+    private fun checkEPGet(ep: Endpoint) {
 
-        if (ep.endpoints.size > 1) {
-
-        } else {
+        if (ep.endpoints.size == 1) {
+            val epObject = Endpoint(ep.endpoints, ep.endpointName, ep.epType, ep.description)
             val httpASync = ep.endpoints[0].httpGet().timeout(500).timeoutRead(500)
                 .responseString { _, _, result ->
                     result.success {}
                     result.failure {}
                 }
             val result = httpASync.join()
-
-            ep.addResult(EndpointResult(ep.endpoints[0], result.isSuccessful))
-
+            epObject.updateParentResult(result.isSuccessful)
+            epObject.addResult(EndpointResult(ep.endpoints[0], result.isSuccessful))
+            endpointResultList.add(epObject)
             Log.d("endpoint", "Address: ${ep.endpoints[0]}\tResult:${result.isSuccessful}\tCode: ${result.statusCode}")
+        } else {
+            val epObject: Endpoint = Endpoint(ep.endpoints, ep.endpointName, ep.epType, ep.description)
+            ep.endpoints.forEach {
+
+                val httpASync = it.httpGet().timeout(500).timeoutRead(500)
+                    .responseString { _, _, result ->
+                        result.success {}
+                        result.failure {}
+                    }
+                val result = httpASync.join()
+
+                if (it == "https://augmedix.jamfcloud.com/") {
+                    if (result.statusCode == 401) {
+                        epObject.updateParentResult(true)
+                        epObject.addResult(EndpointResult(it, true))
+                    }
+                } else {
+                    epObject.updateParentResult(result.isSuccessful)
+                    epObject.addResult(EndpointResult(it, result.isSuccessful))
+                }
+
+                Log.d("endpoint", "Address: ${it}\tResult:${result.isSuccessful}\tCode: ${result.statusCode}")
+            }
+
+            endpointResultList.add(epObject)
+
+        }
+    }
+
+    private fun checkEPPing(ep: Endpoint) {
+
+        val runtime: Runtime = Runtime.getRuntime()
+        val pingCommand = "/system/bin/ping -c 1 "
+
+        if (ep.endpoints.size == 1) {
+            val epObject = Endpoint(ep.endpoints, ep.endpointName, ep.epType, ep.description)
+            try {
+
+                val runCommand = runtime.exec(pingCommand + epObject.endpoints[0])
+                val response = runCommand.waitFor()
+
+                epObject.updateParentResult(response == 0)
+                epObject.addResult(EndpointResult(epObject.endpoints[0], response == 0))
+                endpointResultList.add(epObject)
+
+            } catch (E: Exception) {
+                Log.e("CheckPingError", "**Error while running ping command for address ${ep.endpoints[0]}**\n\n" + E.printStackTrace())
+            }
+        } else {
+            val epObject = Endpoint(ep.endpoints, ep.endpointName, ep.epType, ep.description)
+            epObject.endpoints.forEach { address ->
+                val command = runtime.exec(pingCommand + address)
+                val response = command.waitFor()
+                epObject.updateParentResult(response == 0)
+                epObject.addResult(EndpointResult(address, response == 0))
+            }
+            endpointResultList.add(epObject)
         }
 
+
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (CHECKER_FINISHED) { endpointResultList = global_list_temp }
     }
 
 

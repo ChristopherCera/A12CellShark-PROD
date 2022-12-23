@@ -1,25 +1,26 @@
 package com.monitoring.cellshark.fragments
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
-import android.text.BoringLayout.Metrics
 import android.text.format.Formatter
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
+import com.monitoring.cellshark.MetricsService
 import com.monitoring.cellshark.R
 import com.monitoring.cellshark.Utility
 import com.monitoring.cellshark.data.MetricsEvent
+import com.monitoring.cellshark.data.SERVICE_RUNNING
 import com.monitoring.cellshark.databinding.MetricsFragmentBinding
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
 class MetricsFragment: Fragment(R.layout.metrics_fragment) {
+
 
     private var _binding: MetricsFragmentBinding? = null
     private val binding get() = _binding!!
@@ -32,16 +33,27 @@ class MetricsFragment: Fragment(R.layout.metrics_fragment) {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?): View {
         _binding = MetricsFragmentBinding.inflate(inflater, container, false)
+        if (SERVICE_RUNNING) { binding.metricsServiceButton.text = "Stop Service" }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        Log.d("TAG", "Metrics Fragment")
-        binding.serialContainer.setOnLongClickListener {
-            Log.d("TAG", "TEST")
-            binding.deviceSn.text = "Unable to Retrieve Device Serial"
-            true
+
+        val cellSharkService = Intent(context, MetricsService::class.java)
+
+        binding.metricsServiceButton.setOnClickListener {
+            if(!SERVICE_RUNNING) {
+                SERVICE_RUNNING = true
+                Snackbar.make(it, "Augmedix Service Started", Snackbar.LENGTH_SHORT).setAction("Action", null).show()
+                activity?.startForegroundService(cellSharkService)
+                binding.metricsServiceButton.text = "Stop Service"
+            }
+            else {
+                SERVICE_RUNNING = false
+                activity?.stopService(cellSharkService)
+                binding.metricsServiceButton.text = "Start Service"
+            }
         }
 
         val data = EventBus.getDefault().getStickyEvent(MetricsEvent::class.java)

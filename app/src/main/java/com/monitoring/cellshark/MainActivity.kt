@@ -3,14 +3,18 @@ package com.monitoring.cellshark
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.view.animation.OvershootInterpolator
+import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.monitoring.cellshark.data.ButtonNames
 import com.monitoring.cellshark.data.SERVICE_RUNNING
 import com.monitoring.cellshark.databinding.ActivityMainBinding
 
@@ -53,41 +57,86 @@ class MainActivity : AppCompatActivity() {
         }
 
         serviceFAB.setOnClickListener {
-            if (navController.currentDestination?.label != "MetricsFragment") {
-                navController.navigate(R.id.action_portCheckerFragment_to_metricsFragment)
-            }
-            //DO SOMETHING
-            if (!SERVICE_RUNNING) {
-                SERVICE_RUNNING = true
-                Snackbar.make(it, "Augmedix Service Started", Snackbar.LENGTH_SHORT).setAction("Action", null).show()
-                startForegroundService(cellSharkService)
-                serviceFAB.animate().setInterpolator(interpolator).rotation(180f).setDuration(300).start()
-                serviceTV.text = "Stop Service"
-                serviceFAB.setImageDrawable(AppCompatResources.getDrawable(applicationContext, R.drawable.ic_baseline_pause_24))
+
+            //If the activity is no on the foreground, bring up the activity/layout, otherwise skip
+            fragmentTransitionManager(navController, ButtonNames.METRICS)
+            portCheckerTV.text = "Enter Port Checker"
+
+            if (navController.currentDestination?.label == "MetricsFragment") {
+                serviceTV.text = "Exit"
+
             } else {
-                SERVICE_RUNNING = false
-                stopService(cellSharkService)
-                serviceFAB.animate().setInterpolator(interpolator).rotation(0f).setDuration(300).start()
-                serviceTV.text = "Start Service"
-                serviceFAB.setImageDrawable(AppCompatResources.getDrawable(applicationContext, R.drawable.ic_baseline_play_arrow_24))
+                serviceTV.text = "View Device Metrics"
             }
+
+//            if (!SERVICE_RUNNING) {
+////                SERVICE_RUNNING = true
+////                Snackbar.make(it, "Augmedix Service Started", Snackbar.LENGTH_SHORT).setAction("Action", null).show()
+////                startForegroundService(cellSharkService)
+//                serviceFAB.animate().setInterpolator(interpolator).rotation(180f).setDuration(300).start()
+//                serviceTV.text = "Enter Metrics Page"
+//                serviceFAB.setImageDrawable(AppCompatResources.getDrawable(applicationContext, R.drawable.ic_baseline_pause_24))
+//            }
+//            else {
+////                SERVICE_RUNNING = false
+////                stopService(cellSharkService)
+//                serviceFAB.animate().setInterpolator(interpolator).rotation(0f).setDuration(300).start()
+//                serviceTV.text = "Exit Metrics page"
+//                serviceFAB.setImageDrawable(AppCompatResources.getDrawable(applicationContext, R.drawable.ic_baseline_play_arrow_24))
+//            }
 
         }
 
         portFAB.setOnClickListener {
-            if (navController.currentDestination?.label != "PortCheckerFragment") {
-                navController.navigate(R.id.action_metricsFragment_to_portCheckerFragment)
-                portCheckerTV.text = "Exit Port Checker"
-            }
 
-            else {
-                navController.navigate(R.id.action_portCheckerFragment_to_metricsFragment)
-                portCheckerTV.text = "Open Port Checker"
-            }
+            fragmentTransitionManager(navController, ButtonNames.ENDPOINTS)
+            serviceTV.text = "View Device Metrics"
+
+            if (navController.currentDestination?.label == "PortCheckerFragment") {
+                portCheckerTV.text = "Exit Port Checker"
+            } else portCheckerTV.text = "Enter Port Checker"
 
         }
 
     }
+
+    private fun fragmentTransitionManager(navController: NavController, buttonPressed: ButtonNames){
+
+        Log.d("FragmentTransitionManager", "navController Origin: ${navController.currentDestination?.label}")
+
+        val origin = navController.currentDestination?.label
+
+
+        //Exit navigation
+        if (origin == buttonPressed.name) {
+            when(buttonPressed) {
+                ButtonNames.METRICS -> { navController.navigate(R.id.action_metricsFragment_to_homeFragment) }
+                ButtonNames.ENDPOINTS -> { navController.navigate(R.id.action_portCheckerFragment_to_homeFragment) }
+            }
+        }
+        //Enter Animation
+        else {
+            if (origin == "HomeFragment") {
+                when (buttonPressed) {
+                    ButtonNames.METRICS -> navController.navigate(R.id.action_homeFragment_to_metricsFragment)
+                    ButtonNames.ENDPOINTS -> navController.navigate(R.id.action_homeFragment_to_portCheckerFragment)
+                }
+            }
+            else if (origin == "MetricsFragment") {
+                when (buttonPressed) {
+                    ButtonNames.METRICS -> navController.navigate(R.id.action_metricsFragment_to_homeFragment)
+                    ButtonNames.ENDPOINTS -> navController.navigate(R.id.action_metricsFragment_to_portCheckerFragment)
+                }
+            }
+            else { //ENDPOINT FRAGMENT
+                when (buttonPressed) {
+                    ButtonNames.METRICS -> navController.navigate(R.id.action_portCheckerFragment_to_metricsFragment)
+                    ButtonNames.ENDPOINTS -> navController.navigate(R.id.action_portCheckerFragment_to_homeFragment)
+                }
+            }
+        }
+    }
+
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)

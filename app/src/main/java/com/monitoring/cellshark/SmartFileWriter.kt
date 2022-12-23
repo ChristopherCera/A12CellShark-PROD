@@ -9,6 +9,7 @@ import java.io.IOException
 
 class SmartFileWriter {
 
+    private var fileName: String? = null
 
     fun writeDirectories() {
         val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
@@ -18,7 +19,7 @@ class SmartFileWriter {
         if (!serialDir.exists()) serialDir.mkdirs()
     }
 
-    fun writeToFile(fileName: String, content: String) {
+    fun writeToFile(content: String) {
 
         val data = arrayOf("This", "Is", "a", "test")
         val path: File =
@@ -40,6 +41,10 @@ class SmartFileWriter {
         } catch (e: IOException) {
             e.printStackTrace()
         }
+    }
+
+    private fun changeFileName() {
+
     }
 
 

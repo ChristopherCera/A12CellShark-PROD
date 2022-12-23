@@ -51,49 +51,15 @@
             app:layout_constraintTop_toTopOf="@id/Top_Guideline"
             />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/serialContainer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="34sp"
-            app:layout_constraintStart_toStartOf="@id/start_guideline"
-            app:layout_constraintTop_toBottomOf="@+id/Top_Guideline"
-            app:layout_constraintEnd_toEndOf="@id/end_guideline">
-
-            <TextView
-                android:id="@+id/serialTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Device Serial Number"
-                android:fontFamily="sans-serif"
-                android:textStyle="bold"
-                android:textSize="26sp"
-                android:textColor="?colorPrimary"
-                app:layout_constraintStart_toStartOf="@id/serialContainer"
-                app:layout_constraintTop_toTopOf="@id/serialContainer"/>
-
-            <TextView
-                android:id="@+id/device_sn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-light"
-                android:hint="Unknown"
-                android:textSize="24sp"
-                app:layout_constraintTop_toBottomOf="@id/serialTV"
-                app:layout_constraintStart_toStartOf="@id/serialContainer"
-                tools:ignore="HardcodedText" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/CellMetricsContainer"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="40dp"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintEnd_toEndOf="@+id/end_guideline"
-            app:layout_constraintTop_toBottomOf="@id/serialContainer">
+            app:layout_constraintTop_toBottomOf="@id/Top_Guideline">
 
             <TextView
                 android:id="@+id/cellMetricsTV"
@@ -240,7 +206,7 @@
             android:layout_height="wrap_content"
             android:text="WiFi Metrics"
             android:textSize="26sp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="50dp"
             android:fontFamily="sans-serif"
             android:textStyle="bold"
             android:textColor="?colorPrimary"
@@ -330,11 +296,11 @@
 
 
         <LinearLayout
+            android:id="@+id/WiFiMetrics_LinearLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:orientation="horizontal"
-            android:id="@+id/WiFiMetrics_LinearLayout"
             app:layout_constraintEnd_toEndOf="@id/end_guideline"
             app:layout_constraintStart_toStartOf="@id/start_guideline"
             app:layout_constraintTop_toBottomOf="@id/ipAddress_layout">
@@ -389,7 +355,6 @@
 
             </LinearLayout>
 
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -440,8 +405,18 @@
 
             </LinearLayout>
 
-
         </LinearLayout>
+
+
+        <Button
+            android:id="@+id/metricsServiceButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            app:layout_constraintTop_toBottomOf="@id/WiFiMetrics_LinearLayout"
+            app:layout_constraintStart_toStartOf="@id/start_guideline"
+            app:layout_constraintEnd_toEndOf="@id/end_guideline"
+            android:text="Start Service"/>
 
 
 
