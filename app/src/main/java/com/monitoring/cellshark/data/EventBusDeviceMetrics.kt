@@ -6,9 +6,8 @@ import android.net.wifi.WifiInfo
 import android.net.wifi.WifiManager
 import android.telephony.CellInfoLte
 import android.telephony.TelephonyManager
-import android.util.Log
 
-class MetricsEvent {
+class EventBusDeviceMetrics {
 
     var wm: WifiInfo
     lateinit var lteRSRP: String

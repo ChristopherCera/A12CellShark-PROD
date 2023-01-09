@@ -19,7 +19,9 @@ class SmartFileWriter {
         if (!serialDir.exists()) serialDir.mkdirs()
     }
 
-    fun writeToFile(content: String) {
+    fun writeToFile(content: Array<String>?) {
+
+        if (content == null) return
 
         val data = arrayOf("This", "Is", "a", "test")
         val path: File =

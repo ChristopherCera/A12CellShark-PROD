@@ -37,8 +37,7 @@ internal class MyRecyclerViewAdapter(private var itemsList: MutableList<Endpoint
                 holder as ParentViewHolder
                 holder.apply {
                     parentTV?.text = dataList.endpointName
-                    if (dataList.parentResult == null) resultImage?.setBackgroundResource(R.drawable.ic_baseline_question_mark_24)
-                    else if (dataList.parentResult!!) resultImage?.setBackgroundResource(R.drawable.ic_baseline_check_circle_outline_24)
+                    if (dataList.parentResult) resultImage?.setBackgroundResource(R.drawable.ic_baseline_check_circle_outline_24)
                     else resultImage?.setBackgroundResource(R.drawable.ic_baseline_block_24)
                     downIVLayout?.setOnClickListener { expandOrCollapseParentItem(dataList, position) }
                 }

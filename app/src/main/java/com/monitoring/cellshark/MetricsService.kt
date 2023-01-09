@@ -50,10 +50,40 @@ class MetricsService: Service() {
         monitoringRunnable = object : Runnable {
             override fun run() {
 
-                if ( counter % 10 == 0 ) {
-                    //Add to EventBus
-                    addToEventBus(tm, wm)
+
+                if (counter % 5 == 0) {
+
+                    //Increase log frequency (if rssi exceeds value)
+                    if (increaseLogFrequency) {
+
+                        val wifiMetric = WifiMetric(wm).wifiMetricsArray
+                        SmartFileWriter().writeToFile(wifiMetric)
+
+                    }
+
+                    if ( counter % 10 == 0 ) {
+
+                        //Add to EventBus
+                        addToEventBus(tm, wm)
+
+                        //Write WiFi Data if available
+                        if (!increaseLogFrequency) {
+                            if (!Utility.isWifiOffline(wm)) {
+                                SmartFileWriter().writeToFile(arrayOf(type_ssidConnectionState, Utility.getTimeStamp(DateFormat.EpochTime), "0"))
+                            } else {
+                                val wifiMetric = WifiMetric(wm).wifiMetricsArray
+                                SmartFileWriter().writeToFile(wifiMetric)
+                            }
+                        }
+
+                        //Write LTE data if available
+
+
+                    }
+
                 }
+
+
 
                 counter++
                 metricsHandler.postDelayed(this, 1000)
@@ -68,7 +98,7 @@ class MetricsService: Service() {
 
     @Subscribe
     fun addToEventBus(tm: TelephonyManager, wm: WifiManager) {
-        EventBus.getDefault().postSticky(MetricsEvent(tm, wm))
+        EventBus.getDefault().postSticky(EventBusDeviceMetrics(tm, wm))
     }
 
     override fun onBind(intent: Intent?): IBinder? {

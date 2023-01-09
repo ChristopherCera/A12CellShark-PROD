@@ -6,10 +6,10 @@ class Endpoint(addresses: Array<String>, name: String, type: EndpointType, descr
     var type: Int = Constants.PARENT
     var endpoints: Array<String> = addresses
     var epType: EndpointType = type
-    var description: String = description
+//    var description: String = description
     var isExpanded: Boolean = false
     var result: MutableList<EndpointResult> = mutableListOf()
-    var parentResult: Boolean? = null
+    var parentResult: Boolean = true
 
     fun addResult(r: EndpointResult) {
         result.add(r)
@@ -20,7 +20,7 @@ class Endpoint(addresses: Array<String>, name: String, type: EndpointType, descr
     }
 
     fun updateParentResult(result: Boolean) {
-        parentResult = result
+            if (parentResult) parentResult = result
     }
 
     constructor(addresses: Array<String>, name: String, type: EndpointType, description: String, list: MutableList<EndpointResult>) :

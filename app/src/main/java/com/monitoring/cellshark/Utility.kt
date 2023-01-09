@@ -5,10 +5,28 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
+import android.net.wifi.WifiManager
 import com.monitoring.cellshark.data.ConnectionInterface
+import com.monitoring.cellshark.data.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 object Utility {
 
+    fun isWifiOffline(wm: WifiManager): Boolean {
+        return run {
+            val netInfo = wm.connectionInfo
+            (wm.wifiState == WifiManager.WIFI_STATE_ENABLED
+                    && (netInfo.bssid != null && netInfo.bssid != "02:00:00:00:00"))
+        }
+    }
+
+    fun getTimeStamp(dateType: DateFormat): String {
+        if (dateType == DateFormat.EpochTime ) return System.currentTimeMillis().toString()
+        val time = SimpleDateFormat(dateType.format, Locale.getDefault())
+        time.timeZone = TimeZone.getTimeZone("UTC")
+        return time.format(Date())
+    }
     @SuppressLint("MissingPermission")
     fun getActiveConnectionInterface(context: Context?): ConnectionInterface {
 

@@ -12,11 +12,22 @@ enum class ConnectionInterface {
     CELLULAR, WIFI, OFFLINE, ETHERNET
 }
 
+enum class DateFormat(val format: String) {
+    Log("h:mm:ss z"),
+    File("mmss"),
+    EpochTime("Epoch")
+}
+
 object Constants {
     const val PARENT = 0
     const val CHILD = 1
 }
 
+//Metrics Constants
+const val type_wifi = "wifi"
+const val type_ssidConnectionState = "ssidstate"
+
+var increaseLogFrequency = false
 var CHECKER_FINISHED = false
 var SERVICE_RUNNING = false
 var global_list_temp = mutableListOf<Endpoint>()

@@ -13,7 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.monitoring.cellshark.MetricsService
 import com.monitoring.cellshark.R
 import com.monitoring.cellshark.Utility
-import com.monitoring.cellshark.data.MetricsEvent
+import com.monitoring.cellshark.data.EventBusDeviceMetrics
 import com.monitoring.cellshark.data.SERVICE_RUNNING
 import com.monitoring.cellshark.databinding.MetricsFragmentBinding
 import org.greenrobot.eventbus.EventBus
@@ -56,7 +56,7 @@ class MetricsFragment: Fragment(R.layout.metrics_fragment) {
             }
         }
 
-        val data = EventBus.getDefault().getStickyEvent(MetricsEvent::class.java)
+        val data = EventBus.getDefault().getStickyEvent(EventBusDeviceMetrics::class.java)
         if (data == null) {
             Log.d("Event_State", "Event is Null")
         } else onMetricsUpdate(data)
@@ -66,7 +66,7 @@ class MetricsFragment: Fragment(R.layout.metrics_fragment) {
 
     @SuppressLint("SetTextI18n")
     @Subscribe
-    fun onMetricsUpdate(event: MetricsEvent) {
+    fun onMetricsUpdate(event: EventBusDeviceMetrics) {
 
         //WIFI Update
         binding.connectedSSIDLabel.text = event.wm.ssid

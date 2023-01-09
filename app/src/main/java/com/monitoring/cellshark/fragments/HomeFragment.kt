@@ -8,10 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.monitoring.cellshark.R
 import com.monitoring.cellshark.Utility
-import com.monitoring.cellshark.data.MetricsEvent
 import com.monitoring.cellshark.databinding.HomeBinding
-import com.monitoring.cellshark.databinding.MetricsFragmentBinding
-import org.greenrobot.eventbus.EventBus
 
 class HomeFragment: Fragment(R.layout.home) {
 
